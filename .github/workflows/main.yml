@@ -1,4 +1,4 @@
-# Test 2024-06-26 at 04:02:46
+# Test 2024-06-26 at 04:05:14
 
 name: Test
 run-name: Silicon Chip
@@ -23,6 +23,19 @@ jobs:
       with:
         website: jdk.java.net
 
-    - name: Risc V
+    - name: Position
       run: |
-        java RiscV.java
+        mkdir -p com/AppaApps/Silicon
+        cp       *.java com/AppaApps/Silicon
+
+    - name: Files
+      run:
+        tree
+
+    - name: Compile
+      run: |
+        javac -g -d Classes -cp Classes com/AppaApps/Silicon/Chip.java com/AppaApps/Silicon/RiscV.java com/AppaApps/Silicon/Ban.java
+
+    - name: Test Risc V
+      run: |
+        java -cp Classes com/AppaApps/Silicon/RiscV
