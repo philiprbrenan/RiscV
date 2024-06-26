@@ -4,7 +4,9 @@
 
 # Risc V
 
-Emulate the Risc V 32I instruction set using Java.
+Emulate the
+<a href="https://riscv.org/wp-content/uploads/2019/12/riscv-spec-20191213.pdf">RiscV 32I</a>
+instruction set using Java.
 
 For instance, to produce the Fibonacci numbers:
 
