@@ -9,37 +9,40 @@ Emulate the Risc V 32I instruction set using Java.
 For instance, to produce the Fibonacci numbers:
 
 ```
-   {RiscV    r = new RiscV();                                                   // New Risc V machine and program
-    Register z = r.x0;                                                          // Zero
-    Register N = r.x1;                                                          // Number of Fibonacci numbers to produce
-    Register a = r.x2;                                                          // A
-    Register b = r.x3;                                                          // B
-    Register c = r.x4;                                                          // C = A + B
-    Register i = r.x5;                                                          // Loop counter
+RiscV    r = new RiscV();                // New Risc V machine and program
+Register z = r.x0;                       // Zero
+Register N = r.x1;                       // Number of Fibonacci numbers to produce
+Register a = r.x2;                       // A
+Register b = r.x3;                       // B
+Register c = r.x4;                       // C = A + B
+Register i = r.x5;                       // Loop counter
 
-    Variable p = r.new Variable("p", 2, 10);                                    // Variable declarations
-    Variable o = r.new Variable("a", 4, 10);                                    // Block of 40 bytes starting at byte address 20
-    r.addi(N, z, 10);                                                           // N = 10
-    r.addi(i, z, 0);                                                            // i =  0
-    r.addi(a, z, 0);                                                            // a =  0
-    r.addi(b, z, 1);                                                            // b =  1
-    Label start = r.new Label("start");                                         // Start of for loop
-    r.sb (i, a, o.at());                                                        // Save latest result in memory
-    r.add (c, a, b);                                                            // Latest Fibonacci number
-    r.add (a, b, z);                                                            // Move b to a
-    r.add (b, c, z);                                                            // Move c to b
-    r.addi(i, i, 1);                                                            // Increment loop count
-    r.blt (i, N, start);                                                        // Loop
-    r.emulate();                                                                // Run the program
-    r.ok("""
+Variable p = r.new Variable("p", 2, 10); // Variable declarations
+Variable o = r.new Variable("a", 4, 10); // Block of 40 bytes starting at byte address 20
+r.addi(N, z, 10);                        // N = 10
+r.addi(i, z, 0);                         // i =  0
+r.addi(a, z, 0);                         // a =  0
+r.addi(b, z, 1);                         // b =  1
+Label start = r.new Label("start");      // Start of for loop
+r.sb (i, a, o.at());                     // Save latest result in memory
+r.add (c, a, b);                         // Latest Fibonacci number
+r.add (a, b, z);                         // Move b to a
+r.add (b, c, z);                         // Move c to b
+r.addi(i, i, 1);                         // Increment loop count
+r.blt (i, N, start);                     // Loop
+r.emulate();                             // Run the program
+
+//stop(r);
+r.ok("""
 RiscV      : fibonacci
 Step       : 65
 Instruction: 10
 Registers  :  x1=10 x2=55 x3=89 x4=89 x5=10
 Memory     :  21=1 22=1 23=2 24=3 25=5 26=8 27=13 28=21 29=34
 """);
-   //stop(r.printCode());
-   ok(r.printCode(), """
+
+//stop(r.printCode());
+ok(r.printCode(), """
 RiscV Hex Code: fibonacci
 Line      Name    Op   D S1 S2   T  F3 F5 F7  A R  Immediate    Value
 0000      addi    13   1  0  a   0   0  0  0  0 0          a   a00093
@@ -53,5 +56,4 @@ Line      Name    Op   D S1 S2   T  F3 F5 F7  A R  Immediate    Value
 0008      addi    13   5  5  1   0   0  0  0  0 0          1   128293
 0009       blt    63  17  5  1   4   4 1f 7f  0 0   fffffff6 fe12cbe3
 """);
-   }
 ```
